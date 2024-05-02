@@ -1,23 +1,112 @@
 {
  "cells": [
   {
+   "cell_type": "markdown",
+   "id": "011678c6",
+   "metadata": {
+    "papermill": {
+     "duration": 0.002679,
+     "end_time": "2024-05-02T13:45:55.337333",
+     "exception": false,
+     "start_time": "2024-05-02T13:45:55.334654",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "## SQLi Dataset Exploration"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "cea94ef3",
+   "metadata": {
+    "papermill": {
+     "duration": 0.001581,
+     "end_time": "2024-05-02T13:45:55.341152",
+     "exception": false,
+     "start_time": "2024-05-02T13:45:55.339571",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "### Objectives\n",
+    "- Learn about SQL injections.\n",
+    "- Explore SQLi techniques"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "623b4f83",
+   "metadata": {
+    "papermill": {
+     "duration": 0.001518,
+     "end_time": "2024-05-02T13:45:55.344529",
+     "exception": false,
+     "start_time": "2024-05-02T13:45:55.343011",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "source": [
+    "### Theory\n",
+    "\n",
+    "The **SQL injection** is a code injection technique used to attack data-driven applications, in which malicious SQL statements are inserted in a way that it is executed.\n",
+    "\n",
+    "There are diffrent **types of SQL injection attacks**:\n",
+    "- **Union-based SQLi:** 2 or more SQLi queries combined.\n",
+    "- **Error-based SQLi:** invalid query input that causes failure\n",
+    "- **Blind-based SQLi:** attacker choses moves based ib questions asked for the database (a type of DDos attacks) and it's the worse between the 3 of them.\n",
+    "\n",
+    "attackers come up with new techniques all the time. "
+   ]
+  },
+  {
    "cell_type": "code",
    "execution_count": 1,
-   "id": "1945230e",
+   "id": "6034a2a4",
+   "metadata": {
+    "execution": {
+     "iopub.execute_input": "2024-05-02T13:45:55.351572Z",
+     "iopub.status.busy": "2024-05-02T13:45:55.350138Z",
+     "iopub.status.idle": "2024-05-02T13:45:56.163425Z",
+     "shell.execute_reply": "2024-05-02T13:45:56.162339Z"
+    },
+    "papermill": {
+     "duration": 0.819723,
+     "end_time": "2024-05-02T13:45:56.166115",
+     "exception": false,
+     "start_time": "2024-05-02T13:45:55.346392",
+     "status": "completed"
+    },
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np \n",
+    "import pandas as pd \n",
+    "import os"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "2c4624e9",
    "metadata": {
     "_cell_guid": "b1076dfc-b9ad-4769-8c92-a6c4dae69d19",
     "_uuid": "8f2839f25d086af736a60e9eeb907d3b93b6e0e5",
     "execution": {
-     "iopub.execute_input": "2024-05-02T12:38:55.640286Z",
-     "iopub.status.busy": "2024-05-02T12:38:55.639567Z",
-     "iopub.status.idle": "2024-05-02T12:38:56.556585Z",
-     "shell.execute_reply": "2024-05-02T12:38:56.554829Z"
+     "iopub.execute_input": "2024-05-02T13:45:56.172087Z",
+     "iopub.status.busy": "2024-05-02T13:45:56.171553Z",
+     "iopub.status.idle": "2024-05-02T13:45:56.187286Z",
+     "shell.execute_reply": "2024-05-02T13:45:56.186225Z"
     },
     "papermill": {
-     "duration": 0.923827,
-     "end_time": "2024-05-02T12:38:56.559473",
+     "duration": 0.020999,
+     "end_time": "2024-05-02T13:45:56.189419",
      "exception": false,
-     "start_time": "2024-05-02T12:38:55.635646",
+     "start_time": "2024-05-02T13:45:56.168420",
      "status": "completed"
     },
     "tags": []
@@ -34,23 +123,9 @@
     }
    ],
    "source": [
-    "# This Python 3 environment comes with many helpful analytics libraries installed\n",
-    "# It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python\n",
-    "# For example, here's several helpful packages to load\n",
-    "\n",
-    "import numpy as np # linear algebra\n",
-    "import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)\n",
-    "\n",
-    "# Input data files are available in the read-only \"../input/\" directory\n",
-    "# For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory\n",
-    "\n",
-    "import os\n",
     "for dirname, _, filenames in os.walk('/kaggle/input'):\n",
     "    for filename in filenames:\n",
-    "        print(os.path.join(dirname, filename))\n",
-    "\n",
-    "# You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using \"Save & Run All\" \n",
-    "# You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session"
+    "        print(os.path.join(dirname, filename))"
    ]
   }
  ],
@@ -88,14 +163,14 @@
   },
   "papermill": {
    "default_parameters": {},
-   "duration": 4.234911,
-   "end_time": "2024-05-02T12:38:57.082363",
+   "duration": 4.512686,
+   "end_time": "2024-05-02T13:45:56.812840",
    "environment_variables": {},
    "exception": null,
    "input_path": "__notebook__.ipynb",
    "output_path": "__notebook__.ipynb",
    "parameters": {},
-   "start_time": "2024-05-02T12:38:52.847452",
+   "start_time": "2024-05-02T13:45:52.300154",
    "version": "2.5.0"
   }
  },
